@@ -1,7 +1,7 @@
 {
   "name": "angular-fabric-example-shoes",
   "version": "0.0.1",
-  "homepage": "https://github.com/jossemarGT/angular-fabric-example-shoes",
+  "homepage": "http://jossemargt.github.io/angular-fabric-example-shoes",
   "authors": [
     "jossemarGT <jossemargt@gmail.com>"
   ],
@@ -9,18 +9,15 @@
   "main": "index.html",
   "keywords": [
     "angular",
-    "fabric"
+    "fabric",
+    "canvas",
+    "render",
+    "images"
   ],
   "license": "MIT",
   "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
   "dependencies": {
-    "angular": "~1.3.5"
+    "angular": "~1.3.5",
+    "fabric": "~1.4.13"
   }
 }

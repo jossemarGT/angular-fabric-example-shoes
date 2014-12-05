@@ -1,0 +1,28 @@
+{
+  "name": "angular-fabric-example-shoes",
+  "version": "1.0.0",
+  "description": "Dev stack for this demo",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jossemarGT/angular-fabric-example-shoes.git"
+  },
+  "keywords": [
+    "angular",
+    "fabric",
+    "test"
+  ],
+  "author": "jossemarGT",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jossemarGT/angular-fabric-example-shoes/issues"
+  },
+  "homepage": "http://jossemargt.github.io/angular-fabric-example-shoes/",
+  "devDependencies": {
+    "browser-sync": "^1.7.2",
+    "gulp": "^3.8.10"
+  }
+}

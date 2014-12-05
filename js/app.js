@@ -1,7 +1,5 @@
-(function(ng, fabric){
-  ng.module('wanderDemo', [])
-  ;
+(function(ng){
+  ng.module('wanderDemo', ['ngFabric']);
 })(
-  window.angular,
-  window.fabric
+  window.angular
 );

@@ -7,17 +7,20 @@
     $scope.log = [];
 
     $timeout(function(){
-      FabricService.setOverlayImage('img/overlay-white-vans-shoes-left-view.png');
-      FabricService.loadShape('img/paths-white-vans-shoes-left-view.svg', {
-        hasControls: false,
-        hasBorders: false,
-        lockRotation: true,
-        lockScalingX: true,
-        lockScalingY: true,
-        lockMovementX: true,
-        lockMovementY: true,
-        stroke: 'transparent',
-        fill: 'rgba(0, 136, 204, 0.9)'
+      FabricService
+      .setOverlayImage('img/overlay-white-vans-shoes-left-view.png')
+      .then(function(){
+        FabricService.loadShape('img/paths-white-vans-shoes-left-view.svg', {
+          hasControls: false,
+          hasBorders: false,
+          lockRotation: true,
+          lockScalingX: true,
+          lockScalingY: true,
+          lockMovementX: true,
+          lockMovementY: true,
+          stroke: 'transparent',
+          fill: 'rgba(0, 136, 204, 0.9)'
+        });
       });
     });
 

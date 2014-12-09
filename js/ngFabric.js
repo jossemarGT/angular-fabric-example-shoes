@@ -29,7 +29,12 @@
       }
 
       self.canvas.fire('canvas:modified');
-      self.canvas.renderAll();
+      self.canvas.renderAll.bind(self.canvas);
+    }
+
+    function updateWithPromise(deferred){
+      update();
+      deferred.resolve();
     }
 
     function getActiveStyle(styleName, object) {
@@ -254,7 +259,9 @@
     };
 
     self.setOverlayImage = function (imageUrl) {
-      self.canvas.setOverlayImage(imageUrl, self.canvas.renderAll.bind(self.canvas));
+      var def = $q.defer();
+      self.canvas.setOverlayImage(imageUrl, updateWithPromise(def) );
+      return def.promise;
     }
 
     self.setWidth = function(width) {

@@ -2,18 +2,33 @@
   'use strict';
 
   ng.module('wanderDemo', ['ngFabric'])
-  .controller('DemoCtrl', ['$scope', 'FabricService', function($scope, FabricService){
+  .controller('DemoCtrl', ['$scope', '$timeout', 'FabricService', function($scope, $timeout, FabricService){
     $scope.log = [];
 
-    $scope.updateLog = function () {
-      $scope.log.push({time: Date.now(), msg: '?'})
-    };
+    $timeout(function(){
+      FabricService.setBackgroundColor('#DFECE6');
+    });
 
     $scope.addImage = function () {
-      console.log("it works?");
-      FabricService.addImage('img/white-vans-shoes-kctdrqhh.jpg',
-      {hasBorders: false, hasControls: false});
+      FabricService.addImage(
+        'img/white-vans-shoes-800-contrast-18.png',
+        {
+          hasBorders: false,
+          hasControls: false,
+          lockMovementX: true,
+          lockMovementY: true,
+        }
+      );
     };
+
+    $scope.transperify = function (){
+      FabricService.addFilter('RemoveWhite', {
+        threshold: 30,
+        distance: 10
+      });
+
+      FabricService.applyFilters();
+    }
   }])
   ;
 })(

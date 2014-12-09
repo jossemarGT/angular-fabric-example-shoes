@@ -146,7 +146,6 @@
 
     self.addImage = function(image, imageOptions) {
       var opt = imageOptions || {};
-      console.log(opt);
 
       fabric.Image.fromURL(image, function (object) {
         object.top = opt.top || 0;
@@ -160,6 +159,11 @@
         object.hasControls = !!opt.hasControls;               //Default value: false
         object.hasBorders = !!opt.hasBorders;                 //Default value: false
         object.hoverCursor = opt.hoverCursor || 'pointer';
+        object.lockRotation = !!opt.lockRotation;
+        object.lockScalingX = !!opt.lockScalingX;
+        object.lockScalingY = !!opt.lockScalingY;
+        object.lockMovementX = !!opt.lockMovementX;
+        object.lockMovementY = !!opt.lockMovementY;
 
         self.canvas.add(object);
         object.active = true;
@@ -167,8 +171,23 @@
       });
     };
 
-    self.addFilter = function (argument) {
-      // body...
+    self.addFilter = function (filterName, options, object) {
+      options = options || {};
+      object = object || self.canvas.getActiveObject();
+
+      if(!object)
+        return;
+
+      object.filters.push(new fabric.Image.filters[filterName](options));
+    }
+
+    self.applyFilters = function (object) {
+      object = object || self.canvas.getActiveObject();
+
+      if(!object)
+        return;
+
+      object.applyFilters(self.canvas.renderAll.bind(self.canvas));
     }
 
     self.addText = function(str, textOptions) {

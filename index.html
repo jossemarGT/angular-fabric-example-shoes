@@ -12,12 +12,25 @@
     <script src="js/app.js" charset="utf-8"></script>
   </head>
   <body ng-app="wanderDemo">
-    <div ng-controller="DemoCtrl">
-      <canvas width="800" height="300" fabric ng-model="canvas" ng-change="updateLog()"></canvas>
-      <button type="button" class="btn btn-primary" ng-click="addImage()">
-        Add Image (test)
-      </button>
-      <div class="log">
+    <div class="container">
+      <h1>Shoe builder demo</h1>
+    </div>
+    <div ng-controller="DemoCtrl" class="container">
+      <div class="col-md-9">
+        <canvas width="800" height="500" fabric ng-model="canvas"></canvas>
+      </div>
+      <div class="col-md-3">
+        <section>
+          <h2>Controls</h2>
+          <button type="button" class="btn btn-primary" ng-click="addImage()">
+            Add Image (test)
+          </button>
+          <button type="button" class="btn btn-primary" ng-click="transperify()">
+            Transperify!
+          </button>
+        </section>
+      </div>
+      <div class="log col-md-12">
         <div ng-repeat="action in log">
           {{action.msg}}
         </div>

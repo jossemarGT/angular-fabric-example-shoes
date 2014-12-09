@@ -20,7 +20,7 @@
 
   angular.module('ngFabric', [])
 
-  .factory('FabricService', [function() {
+  .factory('FabricService', ['$q', function($q) {
     var self = {};
 
     function update() {
@@ -111,8 +111,9 @@
       self.canvas.loadFromJSON(json, self.canvas.renderAll(self.canvas));
     };
 
-    self.addShape = function(shapePath, shapeOptions) {
-      var opt = shapeOptions || {};
+    self.loadShape = function(shapePath, shapeOptions) {
+      var opt = shapeOptions || {}
+          , def = $q.defer();
 
       fabric.loadSVGFromURL(shapePath, function(objects, options) {
         var object = fabric.util.groupSVGElements(objects, options);
@@ -136,24 +137,36 @@
         object.lockMovementX = !!opt.lockMovementX;
         object.lockMovementY = !!opt.lockMovementY;
 
+        var stroke = opt.stroke || '#000';
         var fill = opt.fill || '#0088cc'
 
         if (object.isSameColor && object.isSameColor() || !object.paths) {
           object.setFill(fill);
-        } else if (object.paths) {
+        } else if (object.paths && opt.stroke === undefined ) {
           for (var i = 0; i < object.paths.length; i++) {
-            object.paths[i].setFill(fill);
+            object.paths[i].fill(fill);
+          }
+        }
+
+        if (opt.stroke !== undefined){
+          for (var i = 0; i < object.paths.length; i++) {
+            object.paths[i].stroke = stroke;
           }
         }
 
         self.canvas.add(object);
         object.active = true;
         object.bringToFront();
+
+        def.resolve();
       });
+
+      return def.promise;
     };
 
     self.addImage = function(image, imageOptions) {
-      var opt = imageOptions || {};
+      var opt = imageOptions || {}
+          , def = $q.defer();
 
       fabric.Image.fromURL(image, function (object) {
         object.top = opt.top || 0;
@@ -179,7 +192,11 @@
         self.canvas.add(object);
         object.active = true;
         object.bringToFront();
+
+        def.resolve();
       });
+
+      return def.promise;
     };
 
     self.addFilter = function (filterName, options, object) {

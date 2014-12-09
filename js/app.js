@@ -8,7 +8,7 @@
 
     $timeout(function(){
       FabricService.setOverlayImage('img/overlay-white-vans-shoes-left-view.png');
-      FabricService.addShape('img/paths-white-vans-shoes-left-view.svg', {
+      FabricService.loadShape('img/paths-white-vans-shoes-left-view.svg', {
         hasControls: false,
         hasBorders: false,
         lockRotation: true,
@@ -16,7 +16,8 @@
         lockScalingY: true,
         lockMovementX: true,
         lockMovementY: true,
-        fill: 'rgba(0, 136, 204, 0.4)'
+        stroke: 'transparent',
+        fill: 'rgba(0, 136, 204, 0.9)'
       });
     });
 

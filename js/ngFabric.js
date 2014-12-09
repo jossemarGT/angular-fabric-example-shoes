@@ -496,6 +496,7 @@
         ngModel: '=',
         ngChange: '&'
       },
+      restrict: 'A',
       link: function(scope, element) {
         fabric.Object.prototype.transparentCorners = false;
 

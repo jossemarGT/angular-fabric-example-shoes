@@ -2,12 +2,26 @@
 <html>
   <head>
     <title>Angular + Fabric</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" media="screen" charset="utf-8">
     <script src="bower_components/angular/angular.min.js" charset="utf-8"></script>
-    <script src="bower_components/fabric/dist/fabric.js" charset="utf-8"></script>
+    <script src="bower_components/fabric/dist/fabric.min.js" charset="utf-8"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js" charset="utf-8"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js" charset="utf-8"></script>
     <script src="js/ngFabric.js" charset="utf-8"></script>
     <script src="js/app.js" charset="utf-8"></script>
   </head>
   <body ng-app="wanderDemo">
-    <canvas width="800" height="300" fabric></canvas>
+    <div ng-controller="DemoCtrl">
+      <canvas width="800" height="300" fabric ng-model="canvas" ng-change="updateLog()"></canvas>
+      <button type="button" class="btn btn-primary" ng-click="addImage()">
+        Add Image (test)
+      </button>
+      <div class="log">
+        <div ng-repeat="action in log">
+          {{action.msg}}
+        </div>
+      </div>
+    </div>
   </body>
 </html>

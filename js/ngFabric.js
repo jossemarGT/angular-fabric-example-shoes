@@ -146,6 +146,7 @@
 
     self.addImage = function(image, imageOptions) {
       var opt = imageOptions || {};
+      console.log(opt);
 
       fabric.Image.fromURL(image, function (object) {
         object.top = opt.top || 0;
@@ -155,13 +156,20 @@
         object.borderColor = opt.borderColor || 'EEF6FC';
         object.cornerColor = opt.cornerColor || 'rgba(64, 159, 221, .3)';
         object.cornerSize = opt.cornerSize|| 7;
-        object.transparentCorners = opt.transparentCorners || false;
+        object.transparentCorners = !!opt.transparentCorners; //Default value: false
+        object.hasControls = !!opt.hasControls;               //Default value: false
+        object.hasBorders = !!opt.hasBorders;                 //Default value: false
+        object.hoverCursor = opt.hoverCursor || 'pointer';
 
         self.canvas.add(object);
         object.active = true;
         object.bringToFront();
       });
     };
+
+    self.addFilter = function (argument) {
+      // body...
+    }
 
     self.addText = function(str, textOptions) {
       str = str || "New Text";

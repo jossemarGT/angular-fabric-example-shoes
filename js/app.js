@@ -2,33 +2,30 @@
   'use strict';
 
   ng.module('wanderDemo', ['ngFabric'])
-  .controller('DemoCtrl', ['$scope', '$timeout', 'FabricService', function($scope, $timeout, FabricService){
+  .controller('DemoCtrl',
+  ['$scope', '$timeout', 'FabricService', function($scope, $timeout, FabricService){
     $scope.log = [];
 
     $timeout(function(){
-      FabricService.setBackgroundColor('#DFECE6');
+      FabricService.setOverlayImage('img/overlay-white-vans-shoes-left-view.png');
+      FabricService.addShape('img/paths-white-vans-shoes-left-view.svg', {
+        hasControls: false,
+        hasBorders: false,
+        lockRotation: true,
+        lockScalingX: true,
+        lockScalingY: true,
+        lockMovementX: true,
+        lockMovementY: true,
+        fill: 'rgba(0, 136, 204, 0.4)'
+      });
     });
 
-    $scope.addImage = function () {
-      FabricService.addImage(
-        'img/white-vans-shoes-800-contrast-18.png',
-        {
-          hasBorders: false,
-          hasControls: false,
-          lockMovementX: true,
-          lockMovementY: true,
-        }
-      );
-    };
+  }])
 
-    $scope.transperify = function (){
-      FabricService.addFilter('RemoveWhite', {
-        threshold: 30,
-        distance: 10
-      });
+  .factory('ShoeMetaService',[function(){
+    var self = {};
 
-      FabricService.applyFilters();
-    }
+    return self;
   }])
   ;
 })(

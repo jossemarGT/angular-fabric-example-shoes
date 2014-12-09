@@ -122,11 +122,19 @@
         object.angle = opt.angle || 0;
         object.opacity = opt.opacity || 100;
         object.rotatingPointOffset = opt.rotatingPointOffset || self.rotatingPointOffset;
-        object.padding = opt.padding || 5;;
+        object.padding = opt.padding || 0;
         object.borderColor = opt.borderColor || 'EEF6FC';
         object.cornerColor = opt.cornerColor || 'rgba(64, 159, 221, .3)';
         object.cornerSize = opt.cornerSize || 7;
-        object.transparentCorners = opt.transparentCorners || false;
+        object.transparentCorners = !!opt.transparentCorners;
+        object.hasControls = !!opt.hasControls;
+        object.hasBorders = !!opt.hasBorders;
+        object.hoverCursor = opt.hoverCursor || 'pointer';
+        object.lockRotation = !!opt.lockRotation;
+        object.lockScalingX = !!opt.lockScalingX;
+        object.lockScalingY = !!opt.lockScalingY;
+        object.lockMovementX = !!opt.lockMovementX;
+        object.lockMovementY = !!opt.lockMovementY;
 
         var fill = opt.fill || '#0088cc'
 
@@ -150,14 +158,17 @@
       fabric.Image.fromURL(image, function (object) {
         object.top = opt.top || 0;
         object.left = opt.left || 0;
-        object.rotatingPointOffset = opt.rotatingPointOffset || self.rotatingPointOffset;
-        object.padding = opt.padding || 5;
+        object.opacity = opt.opacity || 1;
+        object.padding = opt.padding || 0;
         object.borderColor = opt.borderColor || 'EEF6FC';
         object.cornerColor = opt.cornerColor || 'rgba(64, 159, 221, .3)';
         object.cornerSize = opt.cornerSize|| 7;
+        object.rotatingPointOffset = opt.rotatingPointOffset || self.rotatingPointOffset;
         object.transparentCorners = !!opt.transparentCorners; //Default value: false
         object.hasControls = !!opt.hasControls;               //Default value: false
         object.hasBorders = !!opt.hasBorders;                 //Default value: false
+        object.perPixelTargetFind = !!opt.perPixelTargetFind;
+        object.targetFindTolerance = opt.targetFindTolerance || 0;
         object.hoverCursor = opt.hoverCursor || 'pointer';
         object.lockRotation = !!opt.lockRotation;
         object.lockScalingX = !!opt.lockScalingX;
@@ -224,6 +235,10 @@
       self.canvas.setBackgroundColor(color);
       update();
     };
+
+    self.setOverlayImage = function (imageUrl) {
+      self.canvas.setOverlayImage(imageUrl, self.canvas.renderAll.bind(self.canvas));
+    }
 
     self.setWidth = function(width) {
       self.canvas.setWidth(width);
@@ -311,6 +326,7 @@
     self.getFill = function() {
       return getActiveStyle('fill');
     };
+
     self.setFill = function(value) {
       if (! self.canvas) {
         return;
@@ -570,41 +586,7 @@
         initListeners();
       }
     };
-  }])
-
-  .directive('fabricValue', ['FabricService', function(FabricService) {
-    return {
-      restrict: 'A',
-      link: function ($scope, $element, $attrs) {
-        var prop = capitalize($attrs.fabricValue),
-        getter = 'get' + prop,
-        setter = 'set' + prop;
-
-        $element.on('change keyup select', function() {
-          FabricService[setter] && FabricService[setter](this.value);
-          FabricService.canvas.fire('canvas:modified');
-        });
-
-        $scope.$watch(FabricService[getter], function(newVal) {
-          if (!FabricService.canvas) {
-            return;
-          }
-
-          if ($element[0].type === 'radio') {
-            var radioGroup = document.getElementsByName($element[0].name);
-            for (var i = 0, len = radioGroup.length; i < len; i++) {
-              radioGroup[i].checked = radioGroup[i].value === newVal;
-            }
-          } else {
-            $element.val(newVal);
-          }
-
-          FabricService.canvas.fire('canvas:modified');
-        });
-      }
-    };
   }]);
-
 })(
   window.angular,
   window.fabric

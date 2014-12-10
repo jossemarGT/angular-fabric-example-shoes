@@ -6,7 +6,19 @@
   ['$scope', '$timeout', 'FabricService', function($scope, $timeout, FabricService){
     $scope.log = [];
 
+    $scope.shapeValues = {};
+
+    $scope.shoeFabricColors = [
+      '#5CACC4',
+      '#8CD19D',
+      '#CEE879',
+      '#FCB653',
+      '#FF5254'
+    ];
+
     $timeout(function(){
+      FabricService.setCanvasBgColor('#fff');
+
       FabricService
       .setOverlayImage('img/overlay-white-vans-shoes-left-view.png')
       .then(function(){
@@ -19,17 +31,20 @@
           lockMovementX: true,
           lockMovementY: true,
           stroke: 'transparent',
-          fill: 'rgba(0, 136, 204, 0.9)'
+          fill: 'rgb(0, 136, 204)'
         });
       });
     });
 
-  }])
+    $scope.download = function () {
+      FabricService.download('Shoe.jpg'); // TODO: Take the name from some input
+    };
 
-  .factory('ShoeMetaService',[function(){
-    var self = {};
+    $scope.changeColor = function(colorIndex) {
 
-    return self;
+      FabricService.setFill($scope.shoeFabricColors[colorIndex]);
+    };
+
   }])
   ;
 })(

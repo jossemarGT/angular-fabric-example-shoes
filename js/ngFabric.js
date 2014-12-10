@@ -293,9 +293,10 @@
 
     self.getCanvasData = function() {
       var data = self.canvas.toDataURL({
+        format: 'jpg',
+        multiplier: 2, 
         width: self.canvas.getWidth(),
-        height:  self.canvas.getHeight(),
-        multiplier: multiplier
+        height:  self.canvas.getHeight()
       });
 
       return data;
@@ -309,7 +310,7 @@
 
       // If zoom is less than 1 a small version is created with a lot of white space.
       var data = self.getCanvasData().replace("image/png", "image/octet-stream");
-      filename = filename || 'Untitled Image.png';
+      filename = filename || 'Untitled Image.jpg';
 
       var link = document.createElement('a');
       link.download = filename;

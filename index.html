@@ -22,6 +22,14 @@
       <div class="col-md-3">
         <section>
           <h2>Controls</h2>
+          <div class="">
+            <div ng-repeat="color in shoeFabricColors" style="background-color: {{color}}; height: 20px;" ng-click="changeColor($index)">
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" ng-click="download()">
+            Download Image
+          </button>
+
         </section>
       </div>
       <div class="log col-md-12">

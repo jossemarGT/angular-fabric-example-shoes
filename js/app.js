@@ -28,8 +28,11 @@
           lockRotation: true,
           lockScalingX: true,
           lockScalingY: true,
-          lockMovementX: true,
-          lockMovementY: true,
+          lockMovementX: false,
+          lockMovementY: false,
+          perPixelTargetFind: true,
+          targetFindTolerance: 2,
+          group: false,
           stroke: 'transparent',
           fill: 'rgb(0, 136, 204)'
         });
@@ -41,8 +44,8 @@
     };
 
     $scope.changeColor = function(colorIndex) {
-
       FabricService.setFill($scope.shoeFabricColors[colorIndex]);
+      //FabricService.setOpacity(1);
     };
 
   }])

@@ -36,7 +36,7 @@
       $timeout(function(){
         update();
         deferred.resolve();
-      });      
+      });
     }
 
     function getActiveStyle(styleName, object) {
@@ -103,6 +103,43 @@
       self.canvas.renderAll();
     }
 
+    function setupShape(object, opt){
+      object.top = opt.top || 0;
+      object.left = opt.left || 0;
+      object.angle = opt.angle || 0;
+      object.opacity = opt.opacity || 100;
+      object.rotatingPointOffset = opt.rotatingPointOffset || self.rotatingPointOffset;
+      object.padding = opt.padding || 0;
+      object.borderColor = opt.borderColor || 'EEF6FC';
+      object.cornerColor = opt.cornerColor || 'rgba(64, 159, 221, .3)';
+      object.cornerSize = opt.cornerSize || 7;
+      object.transparentCorners = !!opt.transparentCorners;
+      object.hasControls = !!opt.hasControls;
+      object.hasBorders = !!opt.hasBorders;
+      object.hoverCursor = opt.hoverCursor || 'pointer';
+      object.lockRotation = !!opt.lockRotation;
+      object.lockScalingX = !!opt.lockScalingX;
+      object.lockScalingY = !!opt.lockScalingY;
+      object.lockMovementX = !!opt.lockMovementX;
+      object.lockMovementY = !!opt.lockMovementY;
+      object.perPixelTargetFind = !!opt.perPixelTargetFind;
+      object.targetFindTolerance = opt.targetFindTolerance || 0;
+
+      var stroke = opt.stroke || '#000';
+      var fill = opt.fill || '#0088cc'
+
+      if ( !object.paths || object.isSameColor()) {
+        object.setFill(fill);
+        object.setStroke(stroke);
+      }
+
+      if (object.paths) {
+        for (var i = 0; i < object.paths.length; i++) {
+          object.paths[i].setStroke(stroke);
+        }
+      }
+    }
+
     // Factory functions
     self.canvas = undefined;
     self.rotatingPointOffset = 20;
@@ -123,45 +160,22 @@
           , def = $q.defer();
 
       fabric.loadSVGFromURL(shapePath, function(objects, options) {
-        var object = fabric.util.groupSVGElements(objects, options);
+        var object;
+        if(!!opt.group) {
+          object = fabric.util.groupSVGElements(objects, options);
+          setupShape(object, shapeOptions);
+          self.canvas.add(object)
+        } else {
+          for (var i = 0; i < objects.length; i++) {
+            object = objects[i];
+            // Heads up 
+            shapeOptions.left = object.left;
+            shapeOptions.top = object.top;
 
-        object.top = opt.top || 0;
-        object.left = opt.left || 0;
-        object.angle = opt.angle || 0;
-        object.opacity = opt.opacity || 100;
-        object.rotatingPointOffset = opt.rotatingPointOffset || self.rotatingPointOffset;
-        object.padding = opt.padding || 0;
-        object.borderColor = opt.borderColor || 'EEF6FC';
-        object.cornerColor = opt.cornerColor || 'rgba(64, 159, 221, .3)';
-        object.cornerSize = opt.cornerSize || 7;
-        object.transparentCorners = !!opt.transparentCorners;
-        object.hasControls = !!opt.hasControls;
-        object.hasBorders = !!opt.hasBorders;
-        object.hoverCursor = opt.hoverCursor || 'pointer';
-        object.lockRotation = !!opt.lockRotation;
-        object.lockScalingX = !!opt.lockScalingX;
-        object.lockScalingY = !!opt.lockScalingY;
-        object.lockMovementX = !!opt.lockMovementX;
-        object.lockMovementY = !!opt.lockMovementY;
-
-        var stroke = opt.stroke || '#000';
-        var fill = opt.fill || '#0088cc'
-
-        if (object.isSameColor && object.isSameColor() || !object.paths) {
-          object.setFill(fill);
-        } else if (object.paths && opt.stroke === undefined ) {
-          for (var i = 0; i < object.paths.length; i++) {
-            object.paths[i].fill(fill);
+            setupShape(object, shapeOptions);
+            self.canvas.add(object);
           }
         }
-
-        if (opt.stroke !== undefined){
-          for (var i = 0; i < object.paths.length; i++) {
-            object.paths[i].stroke = stroke;
-          }
-        }
-
-        self.canvas.add(object);
         object.active = true;
         object.bringToFront();
 
@@ -344,10 +358,10 @@
     };
 
     self.getOpacity = function() {
-      return getActiveStyle('opacity') * 100;
+      return getActiveStyle('opacity');
     };
     self.setOpacity = function(value) {
-      setActiveStyle('opacity', parseInt(value, 10) / 100);
+      setActiveStyle('opacity', value);
     };
 
     self.getFill = function() {
@@ -568,8 +582,6 @@
       },
       restrict: 'A',
       link: function(scope, element) {
-        fabric.Object.prototype.transparentCorners = false;
-
         function update() {
           $timeout(function() {
             scope.ngModel = FabricService.canvas.toJSON(['height', 'width', 'backgroundColor']);
@@ -592,7 +604,10 @@
             update();
           });
 
-          FabricService.canvas.on("object:selected", function(){
+          FabricService.canvas.on("object:selected", function(e){
+            scope.fabricActiveObject = e.target;
+            //scope.fabricActiveObject.opacity = 0.7;
+
             $timeout(function() {
               update();
             });
@@ -600,6 +615,7 @@
 
           FabricService.canvas.on("selection:cleared", function(){
             $timeout(function() {
+              //scope.fabricActiveObject.opacity = 1;
               scope.fabricActiveObject = undefined;
             });
           });

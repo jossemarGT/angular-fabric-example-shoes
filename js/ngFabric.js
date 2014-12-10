@@ -20,7 +20,7 @@
 
   angular.module('ngFabric', [])
 
-  .factory('FabricService', ['$q', function($q) {
+  .factory('FabricService', ['$q', '$timeout', function($q, $timeout) {
     var self = {};
 
     function update() {
@@ -33,8 +33,10 @@
     }
 
     function updateWithPromise(deferred){
-      update();
-      deferred.resolve();
+      $timeout(function(){
+        update();
+        deferred.resolve();
+      });      
     }
 
     function getActiveStyle(styleName, object) {
@@ -294,7 +296,7 @@
     self.getCanvasData = function() {
       var data = self.canvas.toDataURL({
         format: 'jpg',
-        multiplier: 2, 
+        multiplier: 2,
         width: self.canvas.getWidth(),
         height:  self.canvas.getHeight()
       });
